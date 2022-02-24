@@ -88,7 +88,7 @@ resource "aws_security_group" "ansible-all" {
   ingress {
     description = "all from WWW"
     from_port   = 0
-    to_port     = 65536
+    to_port     = 65535
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }

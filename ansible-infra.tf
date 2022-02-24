@@ -75,3 +75,70 @@ resource "aws_route_table_association" "ansible_pvt_snc" {
   route_table_id = aws_route_table.ansible_pvt_rt.id
 }
 
+# security group
+resource "aws_security_group" "ansible-all" {
+  name        = "ansible-all"
+  description = "Allow all traffic inbound traffic"
+  vpc_id      = aws_vpc.ansible_vpc.id
+
+  ingress {
+    description = "all from WWW"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "all-ansible"
+  }
+}
+
+# ansible master
+resource "aws_instance" "ansible-master" {
+  ami                    = "ami-0affd4508a5d2481b"
+  instance_type          = "t2.micro"
+  subnet_id              = aws_subnet.ansible_pub_sn.id
+  vpc_security_group_ids = [aws_security_group.ansible-all.id]
+  key_name               = "Linex8AM"
+  private_ip = 10.0.0.10
+  user_data = file("install_ansible.sh")
+  tags = {
+    Name = "ansible-master"
+  }
+}
+
+
+# ansible node 1
+resource "aws_instance" "ansible-node1" {
+  ami                    = "ami-0affd4508a5d2481b"
+  instance_type          = "t2.micro"
+  subnet_id              = aws_subnet.ansible_pub_sn.id
+  vpc_security_group_ids = [aws_security_group.ansible-all.id]
+  key_name               = "Linex8AM"
+  private_ip = 10.0.0.20
+  tags = {
+    Name = "ansible-node1"
+  }
+}
+
+
+# ansible node 2
+resource "aws_instance" "ansible-node2" {
+  ami                    = "ami-0affd4508a5d2481b"
+  instance_type          = "t2.micro"
+  subnet_id              = aws_subnet.ansible_pub_sn.id
+  vpc_security_group_ids = [aws_security_group.ansible-all.id]
+  key_name               = "Linex8AM"
+  private_ip = 10.0.0.21
+  tags = {
+    Name = "ansible-node2"
+  }
+}

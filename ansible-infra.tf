@@ -112,7 +112,7 @@ resource "aws_instance" "ansible-master" {
   subnet_id              = aws_subnet.ansible_pub_sn.id
   vpc_security_group_ids = [aws_security_group.ansible-all.id]
   key_name               = "Linex8AM"
-  private_ip = 10.0.0.10
+  private_ip = "10.0.0.10"
   user_data = file("install_ansible.sh")
   tags = {
     Name = "ansible-master"
@@ -127,7 +127,7 @@ resource "aws_instance" "ansible-node1" {
   subnet_id              = aws_subnet.ansible_pub_sn.id
   vpc_security_group_ids = [aws_security_group.ansible-all.id]
   key_name               = "Linex8AM"
-  private_ip = 10.0.0.20
+  private_ip = "10.0.0.20"
   tags = {
     Name = "ansible-node1"
   }
@@ -141,7 +141,7 @@ resource "aws_instance" "ansible-node2" {
   subnet_id              = aws_subnet.ansible_pub_sn.id
   vpc_security_group_ids = [aws_security_group.ansible-all.id]
   key_name               = "Linex8AM"
-  private_ip = 10.0.0.21
+  private_ip = "10.0.0.21"
   tags = {
     Name = "ansible-node2"
   }
